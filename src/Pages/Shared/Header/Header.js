@@ -7,10 +7,20 @@ import { Link } from 'react-router-dom';
 import { AuthorContext } from '../../../Context/AuthProvider/AuthProvider';
 import LeftSideNav from '../LeftSideNav/LeftSideNav';
 import { FaStamp, IconName } from "react-icons/fa";
-import { Image } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
+
+
+
 
 const Header = () => {
-    const { user} = useContext(AuthorContext);
+    const { user, logOut} = useContext(AuthorContext);
+
+    const handleLogout = () => {
+        logOut()
+        .then(() =>{})
+        .catch((error) => console.error(error))
+    }
+  
     return (
         <div>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -34,7 +44,23 @@ const Header = () => {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#deets">{user?. displayName}</Nav.Link>
+                            <>
+                                {
+                                    user?.uid ? 
+                                    <>
+                                    <span>
+                                        {user.displayName}
+                                    </span>
+                                    <Button varient="light" onClick={handleLogout}>Log Out</Button>
+                                    </>
+                                    :
+                                    <>
+                                    <Link to='/login'>Log In</Link>
+                                    <Link to = '/regeister'>Regiester</Link>
+                                    </>
+                                   
+                                }
+                            </>
                             <Nav.Link eventKey={2} href="#memes">
                             {
                                 user?.photoURL ? 
